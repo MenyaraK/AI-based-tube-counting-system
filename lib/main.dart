@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loginpage/HomePage.dart';
 import 'package:loginpage/Signin.dart';
-import 'Signup.dart';
-import 'Signin.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:loginpage/Signup.dart';
+import 'package:loginpage/Type.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,14 +10,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: MySignupPage(),
     );
   }
 }

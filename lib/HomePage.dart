@@ -1,132 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class BillPage extends StatefulWidget {
+  final String token;
+  final String deviceIP; // New parameter
 
+  BillPage({required this.token, required this.deviceIP});
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _BillPageState createState() => _BillPageState();
 }
 
-class ArticleDataSource extends DataGridSource {
-  List<DataGridRow> _articleData = [];
+class _BillPageState extends State<BillPage> {
+  List<dynamic> _bills = [];
+  String _selectedBillId = "";
 
-  ArticleDataSource(List<Article> articleData) {
-    _articleData = articleData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'Produit', value: e.Produit),
-              DataGridCell<int>(columnName: 'QteBL', value: e.QteBL),
-              DataGridCell<int>(columnName: 'QteSaisie', value: e.QTsaisie),
-            ]))
-        .toList();
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
   }
 
-  @override
-  List<DataGridRow> get rows => _articleData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
+  Future<void> fetchData() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://196.179.229.162:8000/v0.1/delivery_order/all'),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
       );
-    }).toList());
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          _bills = List<dynamic>.from(data);
+          if (_bills.isNotEmpty) {
+            _selectedBillId = _bills[0]['DocEntry'].toString();
+          }
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      // Handle error, show error message, etc.
+      print('Error fetching data: $e');
+    }
   }
-}
 
-class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _textController = TextEditingController();
-  String dropdownValue = 'BL1';
-  var dropdownItems = ['BL1', 'BL2', 'BL3', 'BL4', 'BL5'];
+  Widget buildDropDown() {
+    return DropdownButton<String>(
+      value: _selectedBillId,
+      hint: Text('Veuillez choisir un BL'),
+      items: _bills
+          .map(
+            (bill) => DropdownMenuItem<String>(
+              value: bill['DocEntry'].toString(),
+              child: Text('${bill['DocEntry']} - ${bill['DocDate']}'),
+            ),
+          )
+          .toList(),
+      onChanged: (String? value) {
+        setState(() {
+          _selectedBillId = value!;
+        });
+      },
+    );
+  }
+
+  Widget buildGrid() {
+    final selectedBill = _bills.firstWhere(
+        (bill) => bill['DocEntry'].toString() == _selectedBillId,
+        orElse: () => {});
+    final List<dynamic> billLines = selectedBill['delivery_order_lines'] ?? [];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columns: [
+          DataColumn(label: Text('DocEntry')),
+          DataColumn(label: Text('ItemCode')),
+          DataColumn(label: Text('initial_qt')),
+          DataColumn(label: Text('selected_qt')),
+        ],
+        rows: billLines.map((line) {
+          return DataRow(
+            cells: [
+              DataCell(Text(line['DocEntry'].toString())),
+              DataCell(Text(line['ItemCode'].toString())),
+              DataCell(Text(line['initial_qt'].toString())),
+              DataCell(
+                TextFormField(
+                  initialValue: line['selected_qt'].toString(),
+                  onChanged: (value) {
+                    setState(() {
+                      line['selected_qt'] = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(title: Text('Liste de BL')),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Veuillez choisir un BL:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.keyboard_arrow_down),
-              items: dropdownItems.map((String item) {
-                return DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-            ),
-            SfDataGrid(
-              source: ArticleDataSource(getArticleData()),
-              columnWidthMode: ColumnWidthMode.fill,
-              columns: <GridColumn>[
-                GridColumn(
-                    columnName: 'Produit',
-                    label: Container(
-                        padding: EdgeInsets.all(16.0),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Produit',
-                        ))),
-                GridColumn(
-                    columnName: 'QteBL',
-                    label: Container(
-                        padding: EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: Text('QteBL'))),
-                GridColumn(
-                    columnName: 'QteSaisie',
-                    label: Container(
-                        padding: EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'QteSaisie',
-                          overflow: TextOverflow.ellipsis,
-                        ))),
-              ],
-            ),
+            if (_bills.isEmpty)
+              CircularProgressIndicator() // Show a loading indicator while fetching data
+            else
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Text('Liste de BL'),
+                    buildDropDown(),
+                    SizedBox(height: 20),
+                    Expanded(child: buildGrid()),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
     );
   }
-}
-
-List<Article> getArticleData() {
-  return [
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-    Article('PVC25', 20, 20),
-  ];
-}
-
-class Article {
-  final String Produit;
-  final int QteBL;
-  final int QTsaisie;
-  const Article(this.Produit, this.QteBL, this.QTsaisie);
 }

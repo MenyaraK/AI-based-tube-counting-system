@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:loginpage/Type.dart';
+import 'package:loginpage/signup.dart';
+import 'package:loginpage/HomePage.dart';
 import 'dart:convert';
-import 'signup.dart';
-import 'HomePage.dart';
+import 'package:loginpage/devicePage.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({Key? key, required this.title}) : super(key: key);
@@ -17,6 +19,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String? authToken;
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -30,24 +33,40 @@ class _MyLoginPageState extends State<MyLoginPage> {
         print('Status Code: ${response.statusCode}');
         print('Response body: ${response.body}');
 
-        if (response.statusCode == 200) {
-          // Parse the form data from the response
-          Map<String, String> formData = Uri.splitQueryString(response.body);
-          String? token = formData['access_token'];
+        if (response.statusCode == 202) {
+          // Parse the response JSON
+          Map<String, dynamic> responseData = json.decode(response.body);
+          String? token = responseData['access_token'];
 
-          // Show error message if something went wrong
+          if (token != null) {
+            // Show success message
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('You logged in successfully')),
+            );
+
+            // Navigate to the MyTypePage with the token
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyTypePage(token: token),
+              ),
+            );
+          } else {
+            // Show error message if token is not present
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Error logging in')),
+            );
+          }
+        } else {
+          // Handle other status codes if needed
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('you logged in successfully')),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            const SnackBar(content: Text('Failed to log in')),
           );
         }
       } catch (e) {
         // Show error message if something went wrong
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error submitting the form')),
+          SnackBar(content: Text('Error submitting the form: $e')),
         );
       }
     } else {
@@ -117,7 +136,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   // Navigate to the signup.dart page when the button is pressed
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MySignupPage()),
+                    MaterialPageRoute(
+                      builder: (context) => MySignupPage(),
+                    ),
                   );
                 },
                 child: const Text('Sign Up'),
@@ -132,7 +153,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
 Future<http.Response> loginUser(String username, String password) async {
   final url = Uri.parse(
-      'http://196.179.229.162:8000/user/login/token'); // Replace with the actual login endpoint
+      'http://196.179.229.162:8000/v0.1/users/login/token'); // Replace with the actual login endpoint
   final body = {
     'username': username,
     'password': password,

@@ -40,6 +40,28 @@ class _MySignupPageState extends State<MySignupPage> {
         );
         // Print the status code from the response
         print('Status Code: ${response.statusCode}');
+
+        // Check if the POST request was successful
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          // Print a success message
+          print('You created an account successfully!');
+          // Show a Snackbar for user feedback
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('You created an account successfully!')),
+          );
+          // Navigate to the MyLoginPage
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyLoginPage(title: 'Login page')),
+          );
+        } else {
+          // Handle other status codes if necessary
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${response.body}')),
+          );
+        }
       } catch (e) {
         // Show error message if something went wrong
         ScaffoldMessenger.of(context).showSnackBar(
@@ -204,7 +226,7 @@ class _MySignupPageState extends State<MySignupPage> {
 Future<http.Response> createAlbum(String username, String email,
     String firstName, String lastName, String password, String group) async {
   http.Response response = await http.post(
-    Uri.parse('http://196.179.229.162:8000/user/create'),
+    Uri.parse('http://196.179.229.162:8000/v0.1/users/create'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
