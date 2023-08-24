@@ -1,7 +1,10 @@
+// video.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'capture.dart'; // Import the CapturePage
 
 class LiveStream extends StatefulWidget {
   final String device_id;
@@ -20,8 +23,8 @@ class LiveStream extends StatefulWidget {
 
 class _LiveStreamState extends State<LiveStream> {
   VlcPlayerController? _liveController;
-  String _url = "http://192.168.1.30/";
-  String? _capturedImageUrl;
+  String _url = "http://196.179.229.162/";
+  Map<String, dynamic>? captureResponse;
 
   @override
   void initState() {
@@ -46,17 +49,14 @@ class _LiveStreamState extends State<LiveStream> {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${widget.token}',
     };
-
     final body = jsonEncode({'device_id': deviceId});
-
     final response = await http.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else if (response.statusCode == 422) {
-      print("Validation Error: ${response.body}");
-      throw Exception('Validation Error');
+      var responseBody = json.decode(response.body);
+      print('Server Response from orderCapture: $responseBody');
+      return responseBody;
     } else {
-      throw Exception('Failed to start streaming');
+      throw Exception('Failed to order capture. Response: ${response.body}');
     }
   }
 
@@ -70,43 +70,50 @@ class _LiveStreamState extends State<LiveStream> {
     final body = jsonEncode({
       "delivery_id": 0,
       "device_id": widget.device_id,
-      "workflow": "YOUR_WORKFLOW_VALUE",
-      "user_id": "YOUR_USER_ID_VALUE",
+      "workflow": "Tube_GOC",
+      "user_id": "Monta99",
     });
 
-    final response = await http.post(url, headers: headers, body: body);
-    if (response.statusCode == 200) {
+    // Add timeout here
+    final response = await http
+        .post(url, headers: headers, body: body)
+        .timeout(Duration(seconds: 40), onTimeout: () {
+      throw Exception('HTTP request timed out');
+    });
+
+    // Add the print statements here
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 201) {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to order capture');
     }
   }
 
-  Future<String> getCapture(String captureId) async {
-    final url = Uri.parse(
-        'http://196.179.229.162:8000/v0.1/captures/original/$captureId');
-    final headers = {
-      'Authorization': 'Bearer ${widget.token}',
-    };
-
-    final response = await http.get(url, headers: headers);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed to get capture');
-    }
-  }
-
   void _capture() async {
-    final captureResponse = await orderCapture();
+    print("Capture button pressed!");
+    try {
+      captureResponse = await orderCapture();
+      print("Capture response: $captureResponse");
+    } catch (e) {
+      print("Error encountered: $e");
+      return; // If there's an error, we stop here.
+    }
 
-    if (captureResponse['id'] != null) {
-      final capturedImage = await getCapture(captureResponse['id']);
-      setState(() {
-        _capturedImageUrl = capturedImage;
-      });
+    if (captureResponse != null && captureResponse!['original_image'] != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CapturePage(
+            captureImageUrl: captureResponse!['original_image'],
+            token: widget.token,
+          ),
+        ),
+      );
     } else {
-      print("Error in capturing image");
+      print("Error in capturing image or image URL is null.");
     }
   }
 
@@ -162,9 +169,6 @@ class _LiveStreamState extends State<LiveStream> {
                         ),
                 ),
               ),
-              _capturedImageUrl != null
-                  ? Image.network(_capturedImageUrl!)
-                  : Container(),
               ElevatedButton.icon(
                 onPressed: _capture,
                 icon: Icon(Icons.camera),
