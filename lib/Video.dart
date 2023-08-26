@@ -1,5 +1,3 @@
-// video.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +21,8 @@ class LiveStream extends StatefulWidget {
 
 class _LiveStreamState extends State<LiveStream> {
   VlcPlayerController? _liveController;
-  String _url = "http://196.179.229.162/";
+  static const String BASE_URL = "http://196.179.229.162:8000";
+  String _url = "$BASE_URL/";
   Map<String, dynamic>? captureResponse;
 
   @override
@@ -74,18 +73,14 @@ class _LiveStreamState extends State<LiveStream> {
       "user_id": "Monta99",
     });
 
-    // Add timeout here
     final response = await http
         .post(url, headers: headers, body: body)
         .timeout(Duration(seconds: 40), onTimeout: () {
       throw Exception('HTTP request timed out');
     });
 
-    // Add the print statements here
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 201) {
+      print('Capture response: ${response.body}');
       return json.decode(response.body);
     } else {
       throw Exception('Failed to order capture');
@@ -93,27 +88,33 @@ class _LiveStreamState extends State<LiveStream> {
   }
 
   void _capture() async {
-    print("Capture button pressed!");
     try {
-      captureResponse = await orderCapture();
-      print("Capture response: $captureResponse");
-    } catch (e) {
-      print("Error encountered: $e");
-      return; // If there's an error, we stop here.
-    }
-
-    if (captureResponse != null && captureResponse!['original_image'] != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CapturePage(
-            captureImageUrl: captureResponse!['original_image'],
-            token: widget.token,
+      final response = await orderCapture();
+      if (response['original_image'] != null) {
+        // Show a SnackBar with the original_image value
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Original Image URL: ${response['original_image']}"),
+            duration: Duration(seconds: 5),
           ),
-        ),
-      );
-    } else {
-      print("Error in capturing image or image URL is null.");
+        );
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CapturePage(
+              // Use BASE_URL here
+              captureImageUrl:
+                  '$_LiveStreamState.BASE_URL${response['original_image']}',
+              token: widget.token,
+            ),
+          ),
+        );
+      } else {
+        print("Error in capturing image or image URL is null.");
+      }
+    } catch (e) {
+      print("Error encountered while ordering the capture: $e");
     }
   }
 
