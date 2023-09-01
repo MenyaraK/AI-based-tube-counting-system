@@ -8,11 +8,13 @@ class LiveStream extends StatefulWidget {
   final String device_id;
   final String token;
   final String apiParameter;
+  final List<String> selectedQt; // new parameter
 
   LiveStream({
     required this.device_id,
     required this.token,
     required this.apiParameter,
+    required this.selectedQt, // new parameter
   });
 
   @override
@@ -95,7 +97,7 @@ class _LiveStreamState extends State<LiveStream> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Original Image URL: ${response['original_image']}"),
-            duration: Duration(seconds: 5),
+            duration: Duration(seconds: 20),
           ),
         );
 
@@ -103,9 +105,7 @@ class _LiveStreamState extends State<LiveStream> {
           context,
           MaterialPageRoute(
             builder: (context) => CapturePage(
-              // Use BASE_URL here
-              captureImageUrl:
-                  '$_LiveStreamState.BASE_URL${response['original_image']}',
+              captureImageId: response['original_image'].split('/').last,
               token: widget.token,
             ),
           ),

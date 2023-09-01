@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'Video.dart';
 
 class BillPage extends StatefulWidget {
   final String token;
   final String deviceIP; // New parameter
+  final String apiParameter;
 
-  BillPage({required this.token, required this.deviceIP});
+  BillPage(
+      {required this.token,
+      required this.deviceIP,
+      required this.apiParameter});
   @override
   _BillPageState createState() => _BillPageState();
 }
@@ -14,6 +19,7 @@ class BillPage extends StatefulWidget {
 class _BillPageState extends State<BillPage> {
   List<dynamic> _bills = [];
   String _selectedBillId = "";
+  List<String> _selectedQt = []; // new variable to store
 
   @override
   void initState() {
@@ -104,6 +110,20 @@ class _BillPageState extends State<BillPage> {
     );
   }
 
+  void _navigateToVideoPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LiveStream(
+          device_id: 'DEVICE_ID',
+          token: widget.token,
+          apiParameter: widget.apiParameter,
+          selectedQt: _selectedQt,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +145,10 @@ class _BillPageState extends State<BillPage> {
                   ],
                 ),
               ),
+            ElevatedButton(
+              onPressed: _navigateToVideoPage,
+              child: Text('Go to Video Page'),
+            ),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'HomePage.dart';
+import 'Type.dart';
 import 'Video.dart';
 
 class DevicePage extends StatefulWidget {
@@ -62,19 +63,20 @@ class _DevicePageState extends State<DevicePage> {
                     itemCount: deviceList!.length,
                     itemBuilder: (context, index) {
                       final device = deviceList[index];
+                      final bool isActive = device['status'] == 'ACTIVE';
                       return CheckboxListTile(
                         value: checkboxValues[device['id']],
-                        onChanged: (bool? newValue) {
-                          setState(() {
-                            checkboxValues[device['id']] = newValue!;
-                          });
-                        },
+                        onChanged: isActive
+                            ? (bool? newValue) {
+                                setState(() {
+                                  checkboxValues[device['id']] = newValue!;
+                                });
+                              }
+                            : null,
                         title: Text('Device ID: ${device['id']}'),
                         subtitle: Text('IP: ${device['ip']}'),
                         secondary: Icon(Icons.lightbulb,
-                            color: device['status'] == 'ACTIVE'
-                                ? Colors.green
-                                : Colors.red),
+                            color: isActive ? Colors.green : Colors.red),
                       );
                     },
                   ),
@@ -102,11 +104,11 @@ class _DevicePageState extends State<DevicePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LiveStream(
+                          builder: (context) => BillPage(
                             token: widget.token,
-                            apiParameter: widget.apiParameter,
-                            device_id: selectedDevices[0][
-                                'id'], // Passing the first selected device's ID
+                            deviceIP: selectedDevices[0]['ip'],
+                            apiParameter:
+                                widget.apiParameter, // Pass the apiParameter
                           ),
                         ),
                       );
