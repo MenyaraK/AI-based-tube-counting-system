@@ -4,8 +4,12 @@ import 'package:http/http.dart' as http;
 
 class MyTypePage extends StatefulWidget {
   final String token;
+  final String userId;
 
-  MyTypePage({required this.token});
+  MyTypePage({
+    required this.token,
+    required this.userId,
+  });
 
   @override
   _MyTypePageState createState() => _MyTypePageState();
@@ -41,6 +45,7 @@ class _MyTypePageState extends State<MyTypePage> {
                   title: title,
                   apiParameter:
                       apiParameter, // Passing the apiParameter to the next page
+                  userId: widget.userId,
                 ),
               ),
             );
@@ -68,7 +73,7 @@ class _MyTypePageState extends State<MyTypePage> {
           child: Column(
             children: [
               buildSection(context, "Tubes en PVC", "assets/images/img1.png",
-                  "Tube_GOC"),
+                  "hough_to_generic_tube_count_real"),
               buildSection(
                   context, "Tubes en Aluminium", "assets/images/img2.png", ""),
               buildSection(

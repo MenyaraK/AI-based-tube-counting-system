@@ -5,13 +5,19 @@ import 'Video.dart';
 
 class BillPage extends StatefulWidget {
   final String token;
-  final String deviceIP; // New parameter
+  final String deviceIP;
+  final String deviceId;
   final String apiParameter;
+  final String userId;
 
-  BillPage(
-      {required this.token,
-      required this.deviceIP,
-      required this.apiParameter});
+  BillPage({
+    required this.token,
+    required this.deviceIP,
+    required this.deviceId,
+    required this.apiParameter,
+    required this.userId,
+  });
+
   @override
   _BillPageState createState() => _BillPageState();
 }
@@ -19,7 +25,9 @@ class BillPage extends StatefulWidget {
 class _BillPageState extends State<BillPage> {
   List<dynamic> _bills = [];
   String _selectedBillId = "";
-  List<String> _selectedQt = []; // new variable to store
+  List<String> _selectedQt = [];
+  bool _dataLoaded = false; // To check if the data is loaded
+  List<TextEditingController> _controllers = [];
 
   @override
   void initState() {
@@ -35,19 +43,29 @@ class _BillPageState extends State<BillPage> {
           'Authorization': 'Bearer ${widget.token}',
         },
       );
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
           _bills = List<dynamic>.from(data);
+          _dataLoaded = true;
           if (_bills.isNotEmpty) {
             _selectedBillId = _bills[0]['DocEntry'].toString();
+            // Initialize the selectedQt based on the first bill as a default
+            _selectedQt = _bills.first['delivery_order_lines']
+                .map((line) => line['initial_qt'].toString())
+                .toList()
+                .cast<String>();
+
+            // Also initialize the controllers based on _selectedQt for the first bill
+            _controllers = List.generate(_selectedQt.length,
+                (index) => TextEditingController(text: _selectedQt[index]));
           }
         });
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // Handle error, show error message, etc.
       print('Error fetching data: $e');
     }
   }
@@ -56,17 +74,29 @@ class _BillPageState extends State<BillPage> {
     return DropdownButton<String>(
       value: _selectedBillId,
       hint: Text('Veuillez choisir un BL'),
-      items: _bills
-          .map(
-            (bill) => DropdownMenuItem<String>(
-              value: bill['DocEntry'].toString(),
-              child: Text('${bill['DocEntry']} - ${bill['DocDate']}'),
-            ),
-          )
-          .toList(),
+      items: _bills.map((bill) {
+        return DropdownMenuItem<String>(
+          value: bill['DocEntry'].toString(),
+          child: Text('${bill['DocEntry']} - ${bill['DocDate']}'),
+        );
+      }).toList(),
       onChanged: (String? value) {
         setState(() {
           _selectedBillId = value!;
+          final selectedBill = _bills.firstWhere(
+              (bill) => bill['DocEntry'].toString() == _selectedBillId,
+              orElse: () => {});
+          if (selectedBill != null &&
+              selectedBill['delivery_order_lines'] != null) {
+            _selectedQt = selectedBill['delivery_order_lines']
+                .map((line) => line['initial_qt'].toString())
+                .toList()
+                .cast<String>();
+          } else {
+            _selectedQt = [];
+          }
+          _controllers = List.generate(_selectedQt.length,
+              (index) => TextEditingController(text: _selectedQt[index]));
         });
       },
     );
@@ -84,27 +114,32 @@ class _BillPageState extends State<BillPage> {
         columns: [
           DataColumn(label: Text('DocEntry')),
           DataColumn(label: Text('ItemCode')),
+          DataColumn(label: Text('type')),
           DataColumn(label: Text('initial_qt')),
           DataColumn(label: Text('selected_qt')),
         ],
         rows: billLines.map((line) {
-          return DataRow(
-            cells: [
-              DataCell(Text(line['DocEntry'].toString())),
-              DataCell(Text(line['ItemCode'].toString())),
-              DataCell(Text(line['initial_qt'].toString())),
-              DataCell(
-                TextFormField(
-                  initialValue: line['selected_qt'].toString(),
-                  onChanged: (value) {
-                    setState(() {
-                      line['selected_qt'] = value;
-                    });
-                  },
-                ),
-              ),
-            ],
-          );
+          return DataRow(cells: [
+            DataCell(Text(line['DocEntry'].toString())),
+            DataCell(Text(line['ItemCode'].toString())),
+            DataCell(Text(line['type'].toString())),
+            DataCell(Text(line['initial_qt'].toString())),
+            DataCell(TextFormField(
+              controller: billLines.indexOf(line) < _controllers.length
+                  ? _controllers[billLines.indexOf(line)]
+                  : TextEditingController(),
+              onChanged: (value) {
+                setState(() {
+                  int index = billLines.indexOf(line);
+                  if (index >= 0 && index < _selectedQt.length) {
+                    _selectedQt[index] = value;
+                  }
+                });
+              },
+            )),
+
+// New Cell
+          ]);
         }).toList(),
       ),
     );
@@ -115,10 +150,14 @@ class _BillPageState extends State<BillPage> {
       context,
       MaterialPageRoute(
         builder: (context) => LiveStream(
-          device_id: 'DEVICE_ID',
+          device_id: widget.deviceId,
           token: widget.token,
           apiParameter: widget.apiParameter,
           selectedQt: _selectedQt,
+          deviceIP: widget.deviceIP,
+          userId: widget.userId,
+          selectedBill: _selectedBillId,
+          BillsList: _bills,
         ),
       ),
     );
@@ -131,7 +170,7 @@ class _BillPageState extends State<BillPage> {
       body: Center(
         child: Column(
           children: [
-            if (_bills.isEmpty)
+            if (!_dataLoaded)
               CircularProgressIndicator() // Show a loading indicator while fetching data
             else
               Expanded(

@@ -48,7 +48,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MyTypePage(token: token),
+                builder: (context) => MyTypePage(
+                  token: token,
+                  userId: username,
+                ),
               ),
             );
           } else {
@@ -58,7 +61,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
             );
           }
         } else {
-          // Handle other status codes if needed
+          // Handle other status codes
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Failed to log in')),
           );
@@ -153,7 +156,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
 Future<http.Response> loginUser(String username, String password) async {
   final url = Uri.parse(
-      'http://196.179.229.162:8000/v0.1/users/login/token'); // Replace with the actual login endpoint
+      'http://196.179.229.162:8000/v0.1/users/login/token'); //  login endpoint
   final body = {
     'username': username,
     'password': password,

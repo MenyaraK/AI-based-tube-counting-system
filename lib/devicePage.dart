@@ -9,9 +9,14 @@ class DevicePage extends StatefulWidget {
   final String token;
   final String title;
   final String apiParameter;
+  final String userId;
 
-  DevicePage(
-      {required this.token, required this.title, required this.apiParameter});
+  DevicePage({
+    required this.token,
+    required this.title,
+    required this.apiParameter,
+    required this.userId,
+  });
 
   @override
   _DevicePageState createState() => _DevicePageState();
@@ -65,7 +70,8 @@ class _DevicePageState extends State<DevicePage> {
                       final device = deviceList[index];
                       final bool isActive = device['status'] == 'ACTIVE';
                       return CheckboxListTile(
-                        value: checkboxValues[device['id']],
+                        value: checkboxValues[
+                            device['id']], // Use device id for checkbox mapping
                         onChanged: isActive
                             ? (bool? newValue) {
                                 setState(() {
@@ -73,8 +79,16 @@ class _DevicePageState extends State<DevicePage> {
                                 });
                               }
                             : null,
-                        title: Text('Device ID: ${device['id']}'),
-                        subtitle: Text('IP: ${device['ip']}'),
+                        title:
+                            Text('Name: ${device['name']}'), // Show device name
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('IP: ${device['ip']}'), // Show device IP
+                            Text(
+                                'Description: ${device['description']}'), // Show device description
+                          ],
+                        ),
                         secondary: Icon(Icons.lightbulb,
                             color: isActive ? Colors.green : Colors.red),
                       );
@@ -107,8 +121,9 @@ class _DevicePageState extends State<DevicePage> {
                           builder: (context) => BillPage(
                             token: widget.token,
                             deviceIP: selectedDevices[0]['ip'],
-                            apiParameter:
-                                widget.apiParameter, // Pass the apiParameter
+                            deviceId: selectedDevices[0]['id'],
+                            apiParameter: widget.apiParameter,
+                            userId: widget.userId, // Pass the apiParameter
                           ),
                         ),
                       );
