@@ -54,11 +54,13 @@ class _RetourOutputState extends State<RetourOutput> {
         print('bill line null');
       }
 
+      double upperLimit =
+          typeValue + (0.15 * typeValue); // 15% more than typeValue
+
       for (double x in widget.predictedOutputs) {
         double convertedValue =
             x * 100; // Convert predicted output from m to cm
-        if ((convertedValue - 0.5 <= typeValue) &&
-            (convertedValue + 0.5 >= typeValue)) {
+        if (convertedValue >= typeValue && convertedValue <= upperLimit) {
           count++;
         }
       }
