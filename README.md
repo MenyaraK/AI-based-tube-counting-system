@@ -4,6 +4,16 @@ This repository contains the code for the Automated PVC Pipe Delivery Verificati
 
 ## Table of Contents
 
+- Installation
+- Usage
+- Features
+- Contributing
+- Credits
+- License
+
+## Installation
+### Prerequisites
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
