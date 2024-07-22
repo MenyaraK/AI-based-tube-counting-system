@@ -1,9 +1,8 @@
-<<<<<<< HEAD
-# loginpage
+# Automated PVC Pipe Delivery Verification System
 
-A new Flutter project.
+This repository contains the code for the Automated PVC Pipe Delivery Verification System. The project utilizes a combination of Intel RealSense D35i camera and Raspberry Pi to automate the verification of PVC pipe deliveries, significantly reducing manual errors and improving logistical efficiency.
 
-## Getting Started
+## Table of Contents
 
 This project is a starting point for a Flutter application.
 
