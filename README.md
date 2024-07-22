@@ -23,8 +23,31 @@ To start the application, ensure your development environment is set up with And
 
 - Open the project in Android Studio:
 - Build and run the application:
--- Use the provided emulator or connect a physical device.
--- Run the application through Android Studio.
+- Use the provided emulator or connect a physical device.
+- Run the application through Android Studio.
+
+## Features
+- User Authentication: SignUp and SignIn pages for user management.
+- Camera Selection: Interface to select the camera for capturing delivery images.
+- Invoice Processing: Digitally select and verify delivery invoices.
+- Image Capture and Processing: Automatically capture and process images from the camera to verify the number of PVC pipes delivered.
+- Result Display: Show the analysis results, comparing them against the delivery documents to spot discrepancies.
+
+## Contributing
+Contributions to this project are welcome! Please adhere to the following steps:
+
+- Fork the repository.
+- Create a new branch (git checkout -b feature-branch).
+- Make your changes.
+- Commit your changes (git commit -am 'Add some feature').
+- Push to the branch (git push origin feature-branch).
+- Open a new Pull Request.
+
+## Credits
+Menyara Khaireddine - Initial work and development during the internship at WinIT.
+WinIT Team - Providing guidance and hardware support.
+
+---------------------------------------------------------------------------------------------------------------------------
 
 This project is a starting point for a Flutter application.
 
