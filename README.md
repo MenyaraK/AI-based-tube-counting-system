@@ -13,6 +13,18 @@ This repository contains the code for the Automated PVC Pipe Delivery Verificati
 
 ## Installation
 ### Prerequisites
+- Flutter installed on your machine
+- Android Studio for application development
+- An Intel RealSense D35i camera and Raspberry Pi for setting up the hardware environment
+
+## Usage
+
+To start the application, ensure your development environment is set up with Android Studio and an emulator or physical device is connected.
+
+- Open the project in Android Studio:
+- Build and run the application:
+-- Use the provided emulator or connect a physical device.
+-- Run the application through Android Studio.
 
 This project is a starting point for a Flutter application.
 
