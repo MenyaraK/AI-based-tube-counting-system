@@ -1,6 +1,6 @@
 # Automated PVC Tube Delivery Verification System
 
-**Project Title:** Conception et Développement d’un Système Automatisé pour la Vérification de Livraisons de Tubes en PVC à l’aide d’une Caméra et d’une Interface Mobile
+**Project Title:** Design and Development of an Automated System for Verifying PVC Tube Deliveries Using a Camera and a Mobile Interface
 
 **Developed by:** Menyara KHAIREDDINE  
 **Company:** WinIT  
@@ -68,39 +68,6 @@ Processed Data --> Mobile App (Flutter) --> Display & Verification
 6. **User-Friendly Interface**: Multiple pages for smooth navigation and data visualization.
 
 ---
-
-## User Interface
-Below are the user interface screens developed during the project. Replace the placeholders with actual screenshots.
-
-### 1. **Sign Up Page**
-![Sign Up](images/signup_page.png) *(Replace with actual image)*
-
-### 2. **Sign In Page**
-![Sign In](images/signin_page.png) *(Replace with actual image)*
-
-### 3. **Type Selection Page**
-![Type Page](images/type_page.png) *(Replace with actual image)*
-
-### 4. **Device Selection Page**
-![Device Page](images/device_page.png) *(Replace with actual image)*
-
-### 5. **Invoice Page**
-![Invoice Page](images/invoice_page.png) *(Replace with actual image)*
-
-### 6. **Live Stream Page**
-![Live Stream](images/livestream_page.png) *(Replace with actual image)*
-
-### 7. **Image Capture Page**
-![Capture Page](images/capture_page.png) *(Replace with actual image)*
-
-### 8. **Output Page**
-![Output Page](images/output_page.png) *(Replace with actual image)*
-
-### 9. **Return Output Page**
-![Return Output](images/return_output_page.png) *(Replace with actual image)*
-
----
-
 ## Example - Object Detection with Segment Anything
 This project uses **MobileSAM** for detecting and segmenting PVC tubes. MobileSAM is a lightweight implementation of the Segment Anything model, optimized for performance and speed.
 
@@ -116,10 +83,40 @@ This project uses **MobileSAM** for detecting and segmenting PVC tubes. MobileSA
 
 ### **Detection Example**
 #### Input Image:
-![Input Image](images/input_pvc.png) *(Replace with actual image)*
+![image](https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4)
 
 #### Segmented Output:
-![Segmented Output](images/output_pvc.png) *(Replace with actual image)*
+![image](https://github.com/user-attachments/assets/8107c148-0239-4a64-b14d-5a08aac578dc)
+
+---
+
+## User Interface
+Below are the user interface screens developed during the project. 
+
+### 1. **Sign Up Page**
+![image](https://github.com/user-attachments/assets/2c3dadbf-9b60-4514-b912-1bfdd2e12c7d)
+
+
+### 2. **Sign In Page**
+![image](https://github.com/user-attachments/assets/b2542779-1635-4dd6-828b-ca5522d0e875)
+
+### 3. **Type Selection Page**
+![image](https://github.com/user-attachments/assets/9e9d93f0-20fb-43fa-8ffb-e38eb442ce1c)
+
+### 4. **Device Selection Page**
+![image](https://github.com/user-attachments/assets/2455af90-6509-41fe-89bf-697095e6e058)
+
+### 5. **Invoice Page**
+![image](https://github.com/user-attachments/assets/593c9092-b648-4525-b3d3-f22e7a6a2035)
+
+### 6. **Live Stream Page**
+![image](https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4)
+
+### 7. **Output Page**
+![image](https://github.com/user-attachments/assets/f3cfbbd1-759c-4e17-a9fa-baafc18bf7da)
+
+### 8. **Return Output Page**
+![image](https://github.com/user-attachments/assets/8107c148-0239-4a64-b14d-5a08aac578dc)
 
 ---
 
