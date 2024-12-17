@@ -86,7 +86,7 @@ This project uses **MobileSAM** for detecting and segmenting PVC tubes. MobileSA
 ### Input Image, Segmented Output
 <p float="left">
   <img src="https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4" width="200"/>
-  <img src="https://github.com/user-attachments/assets/f3cfbbd1-759c-4e17-a9fa-baafc18bf7da" width="220"/>
+  <img src="https://github.com/user-attachments/assets/f3cfbbd1-759c-4e17-a9fa-baafc18bf7da" width="215"/>
 </p>
 
 ---
