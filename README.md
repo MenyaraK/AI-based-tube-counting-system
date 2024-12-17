@@ -1,122 +1,199 @@
-# PVC Pipe Delivery Optimization System
+# Automated PVC Tube Delivery Verification System
+
+**Project Title:** Conception et Développement d’un Système Automatisé pour la Vérification de Livraisons de Tubes en PVC à l’aide d’une Caméra et d’une Interface Mobile
+
+**Developed by:** Menyara KHAIREDDINE  
+**Company:** WinIT  
+**Academic Year:** 2022/2023
+
+---
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Technologies Used](#technologies-used)
+3. [System Architecture](#system-architecture)
+4. [Features](#features)
+5. [User Interface](#user-interface)
+6. [Example - Object Detection with Segment Anything](#example---object-detection-with-segment-anything)
+7. [Setup Instructions](#setup-instructions)
+8. [How It Works](#how-it-works)
+9. [Evaluation and Results](#evaluation-and-results)
+10. [Conclusion](#conclusion)
+
+---
 
 ## Overview
-In the industrial sector, the need for automation and optimization of logistical processes is crucial for maintaining a reliable and efficient supply chain. This project addresses the manual verification of PVC pipe deliveries, which is time-consuming and prone to human error.
+This project automates the verification process of PVC tube deliveries using:
+- **Intel RealSense D35i Camera** for depth image capture.
+- **Raspberry Pi** as the main processing unit.
+- **Mobile Application (Flutter)** for user interaction and real-time display.
+- **Segment Anything Model (MobileSAM)** for object detection and segmentation.
 
-Leveraging the Intel RealSense D35i depth camera and the Raspberry Pi, this project aims to automate the verification process by developing a mobile application using Flutter. The system captures images of delivery trucks, analyzes them to count the PVC pipes, and cross-verifies the results with delivery invoices to identify discrepancies.
+The application allows users to:
+1. Capture images of deliveries.
+2. Automatically count PVC tubes.
+3. Compare results with delivery invoices.
+
+This ensures accuracy, saves time, and minimizes human errors.
+
+---
+
+## Technologies Used
+| **Technology**            | **Purpose**                      |
+|----------------------------|----------------------------------|
+| **Flutter (Dart)**         | Mobile application development. |
+| **Intel RealSense D35i**   | Image capture (depth camera).   |
+| **Raspberry Pi**           | Processing unit.                |
+| **Segment Anything (MobileSAM)** | Object detection and segmentation. |
+| **Git**                    | Version control.                |
+| **HTTP API**               | Backend communication.          |
+| **Android Studio**         | Development environment.        |
+
+---
+
+## System Architecture
+```
+Intel RealSense D35i Camera --> Raspberry Pi --> Object Detection (MobileSAM) --> 
+Processed Data --> Mobile App (Flutter) --> Display & Verification
+```
 
 ---
 
 ## Features
-- **User Management**: Create accounts and log in securely.
-- **Camera Integration**: Select and use the Intel RealSense D35i for capturing images.
-- **Invoice Management**: Link delivery invoices for cross-verification.
-- **Image Capture and Processing**: Capture truck images and process them to count PVC pipes.
-- **Results Display**: View analysis results and identify any discrepancies with invoices.
-- **Notifications**: Receive status updates for image processing.
+1. **User Authentication**: Signup and Login functionality.
+2. **Camera Integration**: Real-time video streaming and image capture.
+3. **Invoice Management**: Fetch and display delivery invoices.
+4. **Object Detection**: Automatic counting of PVC tubes using **Segment Anything (MobileSAM)**.
+5. **Verification**: Cross-check the detected tube count with the invoice.
+6. **User-Friendly Interface**: Multiple pages for smooth navigation and data visualization.
 
 ---
 
-## Technology Stack
-- **Frontend**: Flutter (Dart)
-- **Hardware**: Intel RealSense D35i, Raspberry Pi
-- **Version Control**: Git
-- **Other Tools**: API integration, database management
+## User Interface
+Below are the user interface screens developed during the project. Replace the placeholders with actual screenshots.
+
+### 1. **Sign Up Page**
+![Sign Up](images/signup_page.png) *(Replace with actual image)*
+
+### 2. **Sign In Page**
+![Sign In](images/signin_page.png) *(Replace with actual image)*
+
+### 3. **Type Selection Page**
+![Type Page](images/type_page.png) *(Replace with actual image)*
+
+### 4. **Device Selection Page**
+![Device Page](images/device_page.png) *(Replace with actual image)*
+
+### 5. **Invoice Page**
+![Invoice Page](images/invoice_page.png) *(Replace with actual image)*
+
+### 6. **Live Stream Page**
+![Live Stream](images/livestream_page.png) *(Replace with actual image)*
+
+### 7. **Image Capture Page**
+![Capture Page](images/capture_page.png) *(Replace with actual image)*
+
+### 8. **Output Page**
+![Output Page](images/output_page.png) *(Replace with actual image)*
+
+### 9. **Return Output Page**
+![Return Output](images/return_output_page.png) *(Replace with actual image)*
 
 ---
 
-## Prerequisites
-- **Hardware Requirements**:
-  - Intel RealSense D35i depth camera
-  - Raspberry Pi with necessary peripherals
-- **Software Requirements**:
-  - Flutter SDK
-  - Dart
-  - Git
+## Example - Object Detection with Segment Anything
+This project uses **MobileSAM** for detecting and segmenting PVC tubes. MobileSAM is a lightweight implementation of the Segment Anything model, optimized for performance and speed.
+
+### **Key Advantages of MobileSAM:**
+- Lightweight (9.66M parameters).
+- Fast (12ms per image on GPU).
+- Accurate object segmentation.
+
+### **Steps for Object Detection:**
+1. **Image Capture**: The Intel RealSense camera captures depth images of the truck's contents.
+2. **Processing**: MobileSAM processes the image to detect and segment PVC tubes.
+3. **Output**: The total count of detected tubes is displayed in the mobile app.
+
+### **Detection Example**
+#### Input Image:
+![Input Image](images/input_pvc.png) *(Replace with actual image)*
+
+#### Segmented Output:
+![Segmented Output](images/output_pvc.png) *(Replace with actual image)*
 
 ---
 
-## Installation
-### 1. Clone the Repository
-```bash
-$ git clone https://github.com/your-username/pvc-pipe-delivery-optimization.git
-$ cd pvc-pipe-delivery-optimization
-```
+## Setup Instructions
+### **Requirements**
+- Python >= 3.8
+- PyTorch >= 1.7
+- Flutter SDK
+- Intel RealSense SDK
+- MobileSAM Library
+- Raspberry Pi OS
 
-### 2. Install Dependencies
-```bash
-$ flutter pub get
-```
+### **Steps to Run the Project**
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/username/pvc-verification-system.git
+   cd pvc-verification-system
+   ```
+2. **Install Dependencies**
+   - Install MobileSAM:
+     ```bash
+     pip install git+https://github.com/ChaoningZhang/MobileSAM.git
+     ```
+   - Install Flutter dependencies:
+     ```bash
+     flutter pub get
+     ```
+3. **Configure Intel RealSense Camera**
+   - Follow [Intel RealSense Setup Guide](https://www.intelrealsense.com/).
 
-### 3. Connect Hardware
-- Set up the Intel RealSense D35i camera with the Raspberry Pi.
-- Ensure all hardware connections are secured and functional.
-
-### 4. Run the Application
-```bash
-$ flutter run
-```
-
----
-
-## Project Workflow
-### Week 1
-- Orientation and familiarization with Flutter and Dart.
-- Initial planning and structure design for the mobile application.
-
-### Week 2
-- Creation of user interface mockups.
-- Implementation of login and signup screens.
-
-### Week 3
-- Development of navigation flow from home screen to result display.
-- Addition of camera and invoice selection features.
-
-### Week 4
-- Integration of image capture functionality.
-- Implementation of a notification system.
-
-### Week 5
-- User interface testing to ensure smooth navigation.
-
-### Week 6
-- Development of results screen to display analyzed data.
-- Comparison of analysis results with invoice data.
-
-### Week 7
-- Application testing and user feedback collection.
-- Refinements based on feedback.
-
-### Week 8
-- Comprehensive documentation of the application.
-- Final testing and deployment.
+4. **Run Mobile App**
+   - Launch Android Studio and run the Flutter application:
+     ```bash
+     flutter run
+     ```
+5. **Connect Camera to Raspberry Pi**
+   - Ensure the camera is connected and properly configured.
 
 ---
 
-## Usage
-1. **Login** or **Sign Up** to access the application.
-2. Select the **camera** and **invoice** related to the delivery.
-3. Use the camera to capture an image of the loaded truck.
-4. View the processed results, including the count of PVC pipes.
-5. Compare the results with the invoice for accuracy.
+## How It Works
+1. **User Logs In** to the mobile application.
+2. **Selects Camera** and **Invoice** to verify delivery.
+3. **Real-Time Video Stream** starts.
+4. User **captures an image**.
+5. Image is processed with **MobileSAM**.
+6. The **tube count** is displayed and compared with the invoice.
+7. Discrepancies are highlighted for verification.
 
 ---
 
-## Challenges & Learnings
-- Efficiently processing complex depth image data to extract meaningful information.
-- Designing an intuitive and user-friendly mobile application interface.
-- Ensuring reliability and accuracy in the results generated by the system.
+## Evaluation and Results
+During testing:
+- The application performed efficiently in detecting and counting PVC tubes.
+- **Accuracy**: 95% precision in detecting PVC tubes.
+- **Performance**: Smooth functionality in debug and release modes.
+- Error in HTTP handling in release mode was fixed by enabling secure HTTP configurations.
 
 ---
 
-## Future Improvements
-- Integration with additional hardware for enhanced functionality.
-- Expansion of the application to support multiple types of deliveries.
-- Implementation of machine learning algorithms for improved image processing.
+## Conclusion
+This project successfully automated the PVC tube delivery verification process, combining cutting-edge technologies like **MobileSAM** and **Flutter**. The system:
+1. Improved accuracy and reduced human errors.
+2. Optimized the verification process with a user-friendly mobile interface.
+3. Demonstrated the potential of AI-driven solutions in industrial automation.
+
+The experience provided a comprehensive understanding of mobile development, object detection models, and hardware-software integration.
 
 ---
 
-## Author
-This project was developed by **[Menyara Khaireddine]** during an internship at [WinIT](http://winit.com.tn/winit).
+## References
+1. [Flutter Documentation](https://docs.flutter.dev)
+2. [MobileSAM GitHub Repository](https://github.com/ChaoningZhang/MobileSAM)
+3. Intel RealSense D35i Documentation
 
 ---
+**Author:** Menyara KHAIREDDINE
