@@ -103,10 +103,10 @@ Below are the user interface screens developed during the project.
 
 ### Invoice, Live Stream, Output, and Return Output Pages
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/593c9092-b648-4525-b3d3-f22e7a6a2035" width="400"/>
-  <img src="https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4" width="200"/>
+  <img src="https://github.com/user-attachments/assets/593c9092-b648-4525-b3d3-f22e7a6a2035" width="420"/>
+  <img src="https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4" width="190"/>
   <img src="https://github.com/user-attachments/assets/f3cfbbd1-759c-4e17-a9fa-baafc18bf7da" width="160"/>
-  <img src="https://github.com/user-attachments/assets/8107c148-0239-4a64-b14d-5a08aac578dc" width="180"/>
+  <img src="https://github.com/user-attachments/assets/8107c148-0239-4a64-b14d-5a08aac578dc" width="200"/>
 </p>
 ---
 
