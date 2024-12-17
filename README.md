@@ -1,65 +1,122 @@
-# Automated PVC Pipe Delivery Verification System
+# PVC Pipe Delivery Optimization System
 
-This repository contains the code for the Automated PVC Pipe Delivery Verification System. The project utilizes a combination of Intel RealSense D35i camera and Raspberry Pi to automate the verification of PVC pipe deliveries, significantly reducing manual errors and improving logistical efficiency.
+## Overview
+In the industrial sector, the need for automation and optimization of logistical processes is crucial for maintaining a reliable and efficient supply chain. This project addresses the manual verification of PVC pipe deliveries, which is time-consuming and prone to human error.
 
-## Table of Contents
+Leveraging the Intel RealSense D35i depth camera and the Raspberry Pi, this project aims to automate the verification process by developing a mobile application using Flutter. The system captures images of delivery trucks, analyzes them to count the PVC pipes, and cross-verifies the results with delivery invoices to identify discrepancies.
 
-- Installation
-- Usage
-- Features
-- Contributing
-- Credits
-- License
-
-## Installation
-### Prerequisites
-- Flutter installed on your machine
-- Android Studio for application development
-- An Intel RealSense D35i camera and Raspberry Pi for setting up the hardware environment
-
-## Usage
-
-To start the application, ensure your development environment is set up with Android Studio and an emulator or physical device is connected.
-
-- Open the project in Android Studio:
-- Build and run the application:
-- Use the provided emulator or connect a physical device.
-- Run the application through Android Studio.
+---
 
 ## Features
-- User Authentication: SignUp and SignIn pages for user management.
-- Camera Selection: Interface to select the camera for capturing delivery images.
-- Invoice Processing: Digitally select and verify delivery invoices.
-- Image Capture and Processing: Automatically capture and process images from the camera to verify the number of PVC pipes delivered.
-- Result Display: Show the analysis results, comparing them against the delivery documents to spot discrepancies.
+- **User Management**: Create accounts and log in securely.
+- **Camera Integration**: Select and use the Intel RealSense D35i for capturing images.
+- **Invoice Management**: Link delivery invoices for cross-verification.
+- **Image Capture and Processing**: Capture truck images and process them to count PVC pipes.
+- **Results Display**: View analysis results and identify any discrepancies with invoices.
+- **Notifications**: Receive status updates for image processing.
 
-## Contributing
-Contributions to this project are welcome! Please adhere to the following steps:
+---
 
-- Fork the repository.
-- Create a new branch (git checkout -b feature-branch).
-- Make your changes.
-- Commit your changes (git commit -am 'Add some feature').
-- Push to the branch (git push origin feature-branch).
-- Open a new Pull Request.
+## Technology Stack
+- **Frontend**: Flutter (Dart)
+- **Hardware**: Intel RealSense D35i, Raspberry Pi
+- **Version Control**: Git
+- **Other Tools**: API integration, database management
 
-## Credits
-Menyara Khaireddine - Initial work and development during the internship at WinIT.
-WinIT Team - Providing guidance and hardware support.
+---
 
----------------------------------------------------------------------------------------------------------------------------
+## Prerequisites
+- **Hardware Requirements**:
+  - Intel RealSense D35i depth camera
+  - Raspberry Pi with necessary peripherals
+- **Software Requirements**:
+  - Flutter SDK
+  - Dart
+  - Git
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
+### 1. Clone the Repository
+```bash
+$ git clone https://github.com/your-username/pvc-pipe-delivery-optimization.git
+$ cd pvc-pipe-delivery-optimization
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. Install Dependencies
+```bash
+$ flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-# TubeCountingApp
-Tube Counting Mobile App
->>>>>>> 2597de5dd11f025aadb808371bdc244d64dfa8ab
+### 3. Connect Hardware
+- Set up the Intel RealSense D35i camera with the Raspberry Pi.
+- Ensure all hardware connections are secured and functional.
+
+### 4. Run the Application
+```bash
+$ flutter run
+```
+
+---
+
+## Project Workflow
+### Week 1
+- Orientation and familiarization with Flutter and Dart.
+- Initial planning and structure design for the mobile application.
+
+### Week 2
+- Creation of user interface mockups.
+- Implementation of login and signup screens.
+
+### Week 3
+- Development of navigation flow from home screen to result display.
+- Addition of camera and invoice selection features.
+
+### Week 4
+- Integration of image capture functionality.
+- Implementation of a notification system.
+
+### Week 5
+- User interface testing to ensure smooth navigation.
+
+### Week 6
+- Development of results screen to display analyzed data.
+- Comparison of analysis results with invoice data.
+
+### Week 7
+- Application testing and user feedback collection.
+- Refinements based on feedback.
+
+### Week 8
+- Comprehensive documentation of the application.
+- Final testing and deployment.
+
+---
+
+## Usage
+1. **Login** or **Sign Up** to access the application.
+2. Select the **camera** and **invoice** related to the delivery.
+3. Use the camera to capture an image of the loaded truck.
+4. View the processed results, including the count of PVC pipes.
+5. Compare the results with the invoice for accuracy.
+
+---
+
+## Challenges & Learnings
+- Efficiently processing complex depth image data to extract meaningful information.
+- Designing an intuitive and user-friendly mobile application interface.
+- Ensuring reliability and accuracy in the results generated by the system.
+
+---
+
+## Future Improvements
+- Integration with additional hardware for enhanced functionality.
+- Expansion of the application to support multiple types of deliveries.
+- Implementation of machine learning algorithms for improved image processing.
+
+---
+
+## Author
+This project was developed by **[Menyara Khaireddine]** during an internship at [WinIT](http://winit.com.tn/winit).
+
+---
