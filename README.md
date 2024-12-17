@@ -95,15 +95,15 @@ Below are the user interface screens developed during the project.
 
 ### Sign Up, Sign In, Type Selection, and Device Selection Pages
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/2c3dadbf-9b60-4514-b912-1bfdd2e12c7d" width="100"/>
-  <img src="https://github.com/user-attachments/assets/b2542779-1635-4dd6-828b-ca5522d0e875" width="100"/>
-  <img src="https://github.com/user-attachments/assets/9e9d93f0-20fb-43fa-8ffb-e38eb442ce1c" width="100"/>
-  <img src="https://github.com/user-attachments/assets/2455af90-6509-41fe-89bf-697095e6e058" width="100"/>
+  <img src="https://github.com/user-attachments/assets/2c3dadbf-9b60-4514-b912-1bfdd2e12c7d" width="200"/>
+  <img src="https://github.com/user-attachments/assets/b2542779-1635-4dd6-828b-ca5522d0e875" width="200"/>
+  <img src="https://github.com/user-attachments/assets/9e9d93f0-20fb-43fa-8ffb-e38eb442ce1c" width="200"/>
+  <img src="https://github.com/user-attachments/assets/2455af90-6509-41fe-89bf-697095e6e058" width="218"/>
 </p>
 
 ### Invoice, Live Stream, Output, and Return Output Pages
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/593c9092-b648-4525-b3d3-f22e7a6a2035" width="200"/>
+  <img src="https://github.com/user-attachments/assets/593c9092-b648-4525-b3d3-f22e7a6a2035" width="400"/>
   <img src="https://github.com/user-attachments/assets/4be0495f-0465-4b17-91c5-9a3f6d515bd4" width="200"/>
   <img src="https://github.com/user-attachments/assets/f3cfbbd1-759c-4e17-a9fa-baafc18bf7da" width="200"/>
   <img src="https://github.com/user-attachments/assets/8107c148-0239-4a64-b14d-5a08aac578dc" width="200"/>
