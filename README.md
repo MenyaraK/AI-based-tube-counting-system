@@ -97,8 +97,8 @@ Below are the user interface screens developed during the project.
 <p float="left">
   <img src="https://github.com/user-attachments/assets/2c3dadbf-9b60-4514-b912-1bfdd2e12c7d" width="200"/>
   <img src="https://github.com/user-attachments/assets/b2542779-1635-4dd6-828b-ca5522d0e875" width="198"/>
-  <img src="https://github.com/user-attachments/assets/9e9d93f0-20fb-43fa-8ffb-e38eb442ce1c" width="180"/>
-  <img src="https://github.com/user-attachments/assets/2455af90-6509-41fe-89bf-697095e6e058" width="200"/>
+  <img src="https://github.com/user-attachments/assets/9e9d93f0-20fb-43fa-8ffb-e38eb442ce1c" width="195"/>
+  <img src="https://github.com/user-attachments/assets/2455af90-6509-41fe-89bf-697095e6e058" width="205"/>
 </p>
 
 ### Invoice, Live Stream, Output, and Return Output Pages
